@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>genL — Store</title>
+<meta property="og:title" content="genL Store">
+<meta property="og:description" content="Premium tools - instant delivery">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='23' font-family='monospace' font-size='22' font-weight='900' fill='%23f4f2ee' text-anchor='middle'>g</text></svg>">
+<style>
+:root{
+  --bg:#0a0a0a;
+  --bg2:#050505;
+  --paper:#f4f2ee;
+  --paper2:#dcd9d3;
+  --mute:#7a7a7a;
+  --mute2:#4a4a4a;
+  --line:rgba(244,242,238,.14);
+  --line2:rgba(244,242,238,.35);
+  --glow:rgba(244,242,238,.5);
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Kufi Arabic",Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--paper);
+  font:14px/1.6 var(--font);
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* subtle CRT scan */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;z-index:5;
+  background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(244,242,238,.018) 2px 3px);
+  mix-blend-mode:screen;
+}
+
+/* top glow */
+body::after{
+  content:"";
+  position:fixed;top:0;left:0;right:0;height:200px;
+  pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at 50% 0%,rgba(244,242,238,.06),transparent 60%);
+}
+
+/* ============ HEADER ============ */
+header{
+  position:sticky;top:0;z-index:20;
+  border-bottom:1px solid var(--line);
+  background:rgba(10,10,10,.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.bar{
+  max-width:1240px;margin:0 auto;
+  padding:14px clamp(14px,2.4vw,26px);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-weight:900;font-size:20px;letter-spacing:-.5px;
+}
+.logo-mark{
+  width:26px;height:26px;
+  display:grid;place-items:center;
+  border:1.5px solid var(--paper);
+  background:var(--paper);
+  color:var(--bg);
+  font-family:var(--mono);font-weight:900;font-size:15px;
+  line-height:1;border-radius:4px;
+}
+.logo-sub{
+  color:var(--mute);font-weight:400;
+  font-size:12px;letter-spacing:0;margin-right:6px;
+}
+.nav{display:flex;gap:22px;font-size:12px;font-family:var(--mono);letter-spacing:.8px;text-transform:uppercase}
+.nav a{color:var(--mute);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:all .15s}
+.nav a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+.status{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--paper);
+  padding:5px 10px;border:1px solid var(--line);border-radius:999px;
+}
+.status .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--paper);
+  box-shadow:0 0 8px var(--glow),0 0 16px var(--glow);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+
+/* ============ HERO ============ */
+.hero{
+  max-width:1240px;margin:0 auto;
+  padding:clamp(48px,8vw,110px) clamp(14px,2.4vw,26px) clamp(40px,6vw,70px);
+  text-align:center;
+  position:relative;z-index:2;
+}
+.hero .brand-mark{
+  width:clamp(70px,11vw,110px);height:clamp(70px,11vw,110px);
+  margin:0 auto 28px;
+  border:2px solid var(--paper);
+  border-radius:20px;
+  display:grid;place-items:center;
+  background:var(--bg2);
+  box-shadow:
+    0 0 0 1px rgba(244,242,238,.08),
+    0 0 40px rgba(244,242,238,.12),
+    inset 0 0 30px rgba(244,242,238,.04);
+  position:relative;
+}
+.hero .brand-mark::before{
+  content:"";
+  position:absolute;inset:-1px;
+  border-radius:20px;
+  padding:1px;
+  background:linear-gradient(135deg,rgba(244,242,238,.5),rgba(244,242,238,0),rgba(244,242,238,.3));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask-composite:exclude;
+  pointer-events:none;
+}
+.hero .brand-mark svg{width:60%;height:60%}
+.hero h1{
+  font-size:clamp(30px,5.5vw,58px);
+  line-height:1.05;letter-spacing:-1.5px;font-weight:900;
+  margin:0 0 16px;
+}
+.hero h1 em{
+  font-style:normal;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--paper);
+}
+.hero .sub{
+  color:var(--mute);font-size:clamp(13px,1.6vw,15px);
+  max-width:56ch;margin:0 auto 32px;line-height:1.7;
+}
+.hero .sub b{color:var(--paper);font-weight:900}
+.hero .cta-row{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 26px;
+  font:inherit;font-size:12px;font-weight:900;
+  letter-spacing:1.5px;text-transform:uppercase;
+  text-decoration:none;
+  border-radius:8px;
+  transition:all .18s ease;
+  cursor:pointer;border:1.5px solid var(--paper);
+}
+.btn svg{width:14px;height:14px;flex:0 0 14px}
+.btn-primary{
+  background:var(--paper);color:var(--bg);
+}
+.btn-primary:hover{
+  background:var(--paper2);
+  box-shadow:0 0 24px rgba(244,242,238,.35);
+  transform:translateY(-1px);
+}
+.btn-ghost{
+  background:transparent;color:var(--paper);
+}
+.btn-ghost:hover{
+  background:rgba(244,242,238,.06);
+  border-color:var(--paper2);
+}
+
+/* stats strip */
+.stats{
+  max-width:1240px;margin:0 auto;
+  padding:0 clamp(14px,2.4vw,26px) clamp(40px,6vw,70px);
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  position:relative;z-index:2;
+}
+.stat{
+  background:var(--bg);
+  padding:24px 20px;
+  text-align:center;
+}
+.stat .v{
+  font-family:var(--mono);font-size:clamp(20px,3vw,26px);
+  font-weight:900;letter-spacing:-1px;
+  color:var(--paper);
+  text-shadow:0 0 20px rgba(244,242,238,.3);
+}
+.stat .l{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--mute);margin-top:6px;font-family:var(--mono);
+}
+
+/* ============ SECTION ============ */
+main{
+  max-width:1240px;margin:0 auto;
+  padding:0 clamp(14px,2.4vw,26px) 80px;
+  position:relative;z-index:2;
+}
+.sec-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:16px;margin:0 0 28px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.sec-head h2{
+  font-size:13px;font-weight:900;letter-spacing:3px;
+  text-transform:uppercase;color:var(--paper);
+  display:flex;align-items:center;gap:12px;
+}
+.sec-head h2::before{
+  content:"";display:inline-block;
+  width:4px;height:14px;
+  background:var(--paper);
+  box-shadow:0 0 10px var(--glow);
+  border-radius:2px;
+}
+.sec-head .count{
+  font-family:var(--mono);font-size:11px;color:var(--mute);
+  letter-spacing:1px;
+}
+
+/* ============ FILTERS ============ */
+.filters{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-bottom:26px;
+}
+.pill{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--mute);
+  padding:7px 14px;
+  font:inherit;font-size:11px;
+  font-family:var(--mono);letter-spacing:.8px;
+  cursor:pointer;border-radius:999px;
+  transition:all .15s;
+}
+.pill:hover{color:var(--paper);border-color:var(--line2)}
+.pill.on{
+  color:var(--bg);background:var(--paper);
+  border-color:var(--paper);
+  box-shadow:0 0 14px rgba(244,242,238,.3);
+}
+
+/* ============ GRID ============ */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(244,242,238,.02),rgba(244,242,238,0));
+  display:flex;flex-direction:column;
+  transition:all .2s ease;
+  position:relative;
+}
+.card::before{
+  content:"";
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--paper),transparent);
+  opacity:0;transition:opacity .25s;
+}
+.card:hover{
+  border-color:var(--line2);
+  transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 30px rgba(244,242,238,.06);
+}
+.card:hover::before{opacity:.7}
+.card-head{
+  padding:22px 22px 0;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+}
+.card-icon{
+  width:44px;height:44px;
+  border:1.5px solid var(--paper);
+  border-radius:10px;
+  display:grid;place-items:center;
+  background:var(--bg2);
+  flex:0 0 44px;
+}
+.card-icon svg{width:22px;height:22px}
+.card-cat{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--mute);
+  padding:5px 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  white-space:nowrap;
+}
+.card-body{padding:18px 22px 22px;display:flex;flex-direction:column;gap:14px;flex:1}
+.card-body h3{
+  font-size:17px;font-weight:900;letter-spacing:-.2px;
+  color:var(--paper);
+}
+.card-body .desc{
+  font-size:12.5px;line-height:1.65;
+  color:var(--mute);flex:1;min-height:38px;
+}
+.plans{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+}
+.plan{
+  background:var(--bg2);
+  padding:10px 8px;
+  text-align:center;
+  font-family:var(--mono);
+}
+.plan .p{
+  font-size:14px;font-weight:900;
+  color:var(--paper);letter-spacing:-.3px;
+}
+.plan .n{
+  font-size:9px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--mute);margin-top:3px;
+}
+.card .buy{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;
+  background:var(--paper);color:var(--bg);
+  border:none;border-radius:8px;
+  font:inherit;font-size:11px;font-weight:900;
+  letter-spacing:1.5px;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;
+  transition:all .15s;
+}
+.card .buy svg{width:12px;height:12px}
+.card .buy:hover{
+  background:var(--paper2);
+  box-shadow:0 0 20px rgba(244,242,238,.3);
+}
+
+/* ============ HOW IT WORKS ============ */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-top:70px;
+}
+.step{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:24px 22px;
+  background:linear-gradient(180deg,rgba(244,242,238,.02),transparent);
+  position:relative;
+}
+.step .n{
+  font-family:var(--mono);font-size:11px;
+  color:var(--mute);letter-spacing:2px;margin-bottom:12px;
+}
+.step .t{
+  font-size:14px;font-weight:900;color:var(--paper);
+  margin-bottom:8px;letter-spacing:.2px;
+}
+.step .d{
+  font-size:12px;color:var(--mute);line-height:1.65;
+}
+
+/* ============ FOOTER ============ */
+footer{
+  border-top:1px solid var(--line);
+  padding:30px clamp(14px,2.4vw,26px);
+  background:var(--bg2);
+  position:relative;z-index:2;
+}
+.foot{
+  max-width:1240px;margin:0 auto;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;
+  align-items:center;
+  font-family:var(--mono);font-size:11px;color:var(--mute);
+  letter-spacing:.5px;
+}
+.foot .tagline b{color:var(--paper);font-weight:900}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap}
+.foot a{
+  color:var(--mute);text-decoration:none;
+  border-bottom:1px solid transparent;padding-bottom:2px;
+  transition:all .15s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.foot a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+.foot a svg{width:12px;height:12px}
+
+/* ============ EMPTY ============ */
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--mute);
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:1px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+}
+.empty .m{
+  font-size:36px;font-weight:900;
+  color:var(--paper);opacity:.15;
+  margin-bottom:12px;letter-spacing:-2px;
+}
+
+/* ============ MOBILE ============ */
+@media (max-width:720px){
+  .nav{display:none}
+  .bar{padding:12px 14px}
+  .logo{font-size:17px}
+  .hero{padding:44px 14px 40px}
+  .hero .cta-row{flex-direction:column}
+  .btn{width:100%;justify-content:center}
+  .stats{padding:0 14px 40px}
+  main{padding:0 14px 60px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .foot{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="logo">
+      <span class="logo-mark">g</span>
+      genL
+      <span class="logo-sub">/ store</span>
+    </div>
+    <nav class="nav">
+      <a href="#shop">Shop</a>
+      <a href="#how">How</a>
+      <a href="#support">Support</a>
+    </nav>
+    <div class="status">
+      <span class="dot"></span>
+      <span>ONLINE</span>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="brand-mark">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M 8 20 Q 8 8 20 8 Q 32 8 32 20 Q 32 32 20 32 L 20 22"
+            fill="none" stroke="#f4f2ee" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="27" cy="13" r="1.8" fill="#f4f2ee"/>
+      <path d="M 25 10 L 27 12 L 24 15"
+            fill="none" stroke="#f4f2ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <h1>أدوات <em>premium</em><br>تسليم فوري</h1>
+
+  <p class="sub">
+    متجر genL يعرض <b>الأدوات الجاهزة</b> بأسعار واضحة.
+    <b>Weekly $5 · Monthly $10 · Yearly $15</b>.
+    الدفع ERC-20، التسليم في الخاص.
+  </p>
+
+  <div class="cta-row">
+    <a class="btn btn-primary" id="cta-shop" href="#shop">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 3h2l1.5 8h7l1.5-6H5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6" cy="13" r="1" fill="currentColor"/>
+        <circle cx="12" cy="13" r="1" fill="currentColor"/>
+      </svg>
+      تصفح الأدوات
+    </a>
+    <a class="btn btn-ghost" id="cta-discord" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M11 5 L9 8 L11 11 M5 5 L7 8 L5 11"
+              fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      افتح تذكرة
+    </a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat"><div class="v">247</div><div class="l">Orders</div></div>
+  <div class="stat"><div class="v">183</div><div class="l">Customers</div></div>
+  <div class="stat"><div class="v">4.87</div><div class="l">Rating</div></div>
+  <div class="stat"><div class="v">24/7</div><div class="l">Support</div></div>
+</section>
+
+<main>
+
+  <div class="sec-head" id="shop">
+    <h2>الأدوات</h2>
+    <span class="count" id="count">--</span>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="sec-head" id="how" style="margin-top:80px">
+    <h2>كيف تشتري</h2>
+    <span class="count">4 Steps</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="n">01</div>
+      <div class="t">اختر الأداة</div>
+      <div class="d">من القائمة فوق. كل أداة لها سعر و ID.</div>
+    </div>
+    <div class="step">
+      <div class="n">02</div>
+      <div class="t">افتح تذكرة</div>
+      <div class="d">اضغط "شراء" → يفتح Discord ticket خاص فيك.</div>
+    </div>
+    <div class="step">
+      <div class="n">03</div>
+      <div class="t">ادفع</div>
+      <div class="d">اختر الخطة، حوّل المبلغ ERC-20، ارفع صورة الإثبات.</div>
+    </div>
+    <div class="step">
+      <div class="n">04</div>
+      <div class="t">استلم</div>
+      <div class="d">بعد التأكيد، الملف + المفتاح في الخاص.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="support">
+  <div class="foot">
+    <div class="tagline">© genL — <b>2019</b> — بدون موقع وسيط</div>
+    <div class="foot-links">
+      <a id="foot-discord" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M5 7 L5 9 M11 7 L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Discord
+      </a>
+      <a id="foot-support" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 3 L13 3 L13 11 L7 11 L4 14 L4 11 L3 11 Z"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        Support
+      </a>
+      <a href="#" onclick="return false">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 5 L8 8 L10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        ERC-20 Only
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// CONFIG — تعدل هذا الجزء
+// ============================================================
+const CONFIG = {
+  discordInvite: "https://discord.gg/YOUR_INVITE",
+  // رابط قناة الشراء — كلك يمين على القناة Copy Link
+  ticketUrl: "https://discord.com/channels/1555669054684008639/1555669429927542804"
+};
+
+// ============================================================
+// ICONS — SVG مدمج
+// ============================================================
+const ICONS = {
+  bot:      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><circle cx="9" cy="13" r="1.2" fill="#f4f2ee"/><circle cx="15" cy="13" r="1.2" fill="#f4f2ee"/><path d="M12 3v4"/><circle cx="12" cy="3" r="1.2" fill="#f4f2ee"/></svg>',
+  key:      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="10" r="4"/><path d="M11 13 L20 22 M17 19 L19 21 M14 16 L16 18"/></svg>',
+  target:   '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="#f4f2ee"/></svg>',
+  coin:     '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M9 9 L12 8 L15 9 L15 11 L9 12 L9 14 L15 15 L15 17 L12 18 L9 17"/></svg>',
+  loader:   '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linecap="round"><path d="M12 3 L12 7 M12 17 L12 21 M3 12 L7 12 M17 12 L21 12 M5.6 5.6 L8.5 8.5 M15.5 15.5 L18.4 18.4 M5.6 18.4 L8.5 15.5 M15.5 8.5 L18.4 5.6"/></svg>',
+  hook:     '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L12 15 Q 12 20 8 20 Q 4 20 4 16"/><path d="M9 6 L12 3 L15 6"/></svg>',
+  shield:   '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 L20 6 L20 12 Q 20 19 12 21 Q 4 19 4 12 L4 6 Z"/><path d="M9 12 L11 14 L15 10" stroke-linecap="round"/></svg>',
+  card:     '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10 L21 10"/><rect x="6" y="14" width="4" height="2" fill="#f4f2ee"/></svg>',
+  wave:     '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linecap="round"><path d="M3 12 L7 8 L11 12 L15 8 L19 12 L21 10 M3 16 L7 12 L11 16 L15 12 L19 16"/></svg>',
+  box:      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f4f2ee" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8 L12 4 L20 8 L20 16 L12 20 L4 16 Z"/><path d="M4 8 L12 12 L20 8 M12 12 L12 20"/></svg>'
+};
+
+// ============================================================
+// PRODUCTS — تعدل هذا الجزء
+// ============================================================
+const PRODUCTS = [
+  {
+    name: "RAT Pro",
+    category: "bots",
+    icon: "bot",
+    description: "Remote access tool with web panel, AES-256 encryption, Windows + Android support."
+  },
+  {
+    name: "Stealth Keylogger",
+    category: "tools",
+    icon: "key",
+    description: "Silent keylogger with auto-start, encrypted exfil, and Telegram delivery."
+  },
+  {
+    name: "ESP Bundle",
+    category: "cheats",
+    icon: "target",
+    description: "Multi-game ESP package. DirectX hook, low overhead, stream-proof overlay."
+  },
+  {
+    name: "Crypto Drainer",
+    category: "crypto",
+    icon: "coin",
+    description: "Multi-chain drainer with EIP-712 signature and wallet bypass."
+  },
+  {
+    name: "Custom Loader",
+    category: "loaders",
+    icon: "loader",
+    description: "Multi-layer encrypted loader with anti-VM and anti-sandbox checks."
+  },
+  {
+    name: "Phishing Kit",
+    category: "phish",
+    icon: "hook",
+    description: "Ready-made phishing pages with real-time credential capture panel."
+  },
+  {
+    name: "Aimbot Pro",
+    category: "cheats",
+    icon: "target",
+    description: "Kernel-level aimbot with human-like smoothing and HWID spoofer."
+  },
+  {
+    name: "FUD Crypter",
+    category: "loaders",
+    icon: "shield",
+    description: "Polymorphic crypter bypassing major AV engines with runtime mutation."
+  },
+  {
+    name: "DDoS Panel",
+    category: "bots",
+    icon: "wave",
+    description: "Layer 4/7 stress tester with multi-vector support and account system."
+  },
+  {
+    name: "VIP Account Pack",
+    category: "accounts",
+    icon: "card",
+    description: "Verified premium accounts with 30-day replacement warranty."
+  },
+  {
+    name: "Browser Stealer",
+    category: "tools",
+    icon: "box",
+    description: "Extracts passwords, cookies, tokens, and cards from Chromium + Firefox."
+  },
+  {
+    name: "Android RAT",
+    category: "bots",
+    icon: "bot",
+    description: "Android remote tool with live screen, file manager, and SMS access."
+  }
+];
+
+// ============================================================
+// RENDER
+// ============================================================
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+const PLANS = [
+  { price: 5,  label: "Weekly" },
+  { price: 10, label: "Monthly" },
+  { price: 15, label: "Yearly" }
+];
+
+function ticketUrl(product) {
+  return CONFIG.ticketUrl;
+}
+
+function cardHTML(p) {
+  const icon = ICONS[p.icon] || ICONS.box;
+  const plansHTML = PLANS.map(pl => `
+    <div class="plan">
+      <div class="p">$${pl.price}</div>
